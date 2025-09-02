@@ -1,16 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import Footer from "./components/Footer";
 
 export const metadata: Metadata = {
   title: "Hiver — l’app per genitori organizzati",
@@ -19,17 +9,24 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="it">
-      <body>
+    <html lang="it" className="h-full">
+      <head>
+        {/* Adobe Fonts (Typekit) */}
+        <link rel="stylesheet" href="https://use.typekit.net/wbj7sss.css" />
+      </head>
+      <body className="min-h-screen flex flex-col">
+        {/* Background gradient */}
         <div
           className="fixed inset-0 -z-10 bg-gradient-to-b from-indigo-200/80 to-white"
           aria-hidden
         />
-        {children}
+
+        {/* Main content */}
+        <main className="flex-1">{children}</main>
+
+        {/* Global footer */}
+        <Footer />
       </body>
     </html>
   );
 }
-
-
-
