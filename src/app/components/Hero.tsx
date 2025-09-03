@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Hero() {
   return (
@@ -17,10 +18,9 @@ export default function Hero() {
       />
 
       {/* In-card navbar */}
-      <nav className="mx-auto flex max-w-7xl items-center justify-between py-8 sm:py-10">
-        <div className="flex items-center gap-2">
-          <div className="h-5 w-5 rounded-md bg-[#6E6CF6]" aria-hidden />
-          <span className="text-2xl font-semibold text-gray-900" style={{ fontFamily: 'var(--font-hagrid)' }}>Hiver</span>
+      <nav className="mx-auto flex max-w-7xl items-center justify-between pt-1 sm:pt-2 lg:pt-3">
+        <div className="flex items-center">
+          <Image src="/logo-hiver.svg" alt="Hiver" width={120} height={120} priority />
         </div>
         <ul className="hidden gap-10 text-lg text-gray-800 sm:flex">
           <li><Link href="#funzioni" className="hover:opacity-80">Funzioni</Link></li>
