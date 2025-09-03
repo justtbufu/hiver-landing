@@ -1,24 +1,11 @@
 import Image from "next/image";
+import Hero from "./components/Hero";
 
 export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative flex flex-col items-center justify-center min-h-screen px-4 text-center bg-[color:var(--pink)]">
-        <h1
-          className="text-4xl sm:text-6xl font-extrabold tracking-tight"
-          style={{ fontFamily: "var(--font-hagrid)" }}
-        >
-          L’app per genitori{" "}
-          <span className="text-[color:var(--terra)]">organizzati</span>
-        </h1>
-        <p
-          className="mt-4 max-w-xl text-lg text-white/90"
-          style={{ fontFamily: "var(--font-salted)" }}
-        >
-          Ti avviseremo quando Hiver sarà disponibile. Niente spam.
-        </p>
-      </section>
+      <Hero />
 
       {/* Cos’è Hiver */}
       <section className="px-4 py-16 max-w-4xl mx-auto">
