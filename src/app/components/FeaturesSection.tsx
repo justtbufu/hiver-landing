@@ -228,7 +228,7 @@ export default function FeaturesSection() {
           {/* Sheet */}
           <div
             className={[
-              "absolute inset-x-2 bottom-0 h-[82vh] rounded-3xl bg-white shadow-2xl ring-1 ring-black/5 touch-pan-y overflow-y-auto overscroll-contain pb-[env(safe-area-inset-bottom)] will-change-transform",
+              "absolute inset-x-2 bottom-0 h-[82vh] rounded-3xl bg-white shadow-2xl ring-1 ring-black/5 touch-pan-y overflow-hidden overscroll-none pb-[env(safe-area-inset-bottom)] will-change-transform",
               isDragging ? "transition-none" : "transition-transform duration-300 ease-[cubic-bezier(.16,1,.3,1)]",
             ].join(" ")}
             style={{ transform: modalOpen ? `translateY(${dragY}px)` : "translateY(100%)" }}
@@ -265,9 +265,10 @@ export default function FeaturesSection() {
                       src={f.shot}
                       alt={f.shotAlt}
                       fill
+                      draggable={false}
                       priority
                       className={[
-                        "absolute inset-0 object-contain select-none transition-opacity duration-300 ease-[cubic-bezier(.16,1,.3,1)]",
+                        "absolute inset-0 object-contain select-none pointer-events-none touch-none transition-opacity duration-300 ease-[cubic-bezier(.16,1,.3,1)]",
                         active === f.id ? "opacity-100" : "opacity-0",
                       ].join(" ")}
                       sizes="(max-width: 1023px) 92vw, 420px"
