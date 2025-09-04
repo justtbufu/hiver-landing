@@ -96,6 +96,20 @@ export default function FeaturesSection() {
   const [isDragging, setIsDragging] = useState(false);
   const startY = useRef(0);
 
+  // lock background scroll when mobile sheet is open (prevents body/page scroll)
+  useEffect(() => {
+    if (!modalOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    const prevBehavior = (document.documentElement as HTMLElement).style.overscrollBehavior;
+    document.body.style.overflow = 'hidden';
+    (document.documentElement as HTMLElement).style.overscrollBehavior = 'contain';
+
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      (document.documentElement as HTMLElement).style.overscrollBehavior = prevBehavior;
+    };
+  }, [modalOpen]);
+
   const backdropOpacity = modalOpen ? Math.max(0, 1 - dragY / 180) : 0;
 
   const handleSelect = (id: Feature["id"]) => {
@@ -223,12 +237,13 @@ export default function FeaturesSection() {
             style={{ opacity: backdropOpacity }}
             onClick={closeSheet}
             onTouchMove={(e) => e.preventDefault()}
+            onWheel={(e) => e.preventDefault()}
           />
 
           {/* Sheet */}
           <div
             className={[
-              "absolute inset-x-2 bottom-0 h-[82vh] rounded-3xl bg-white shadow-2xl ring-1 ring-black/5 touch-pan-y overflow-hidden overscroll-none pb-[env(safe-area-inset-bottom)] will-change-transform",
+              "absolute inset-x-2 bottom-0 h-[82vh] rounded-3xl bg-white shadow-2xl ring-1 ring-black/5 touch-pan-y overflow-hidden overflow-x-hidden overscroll-none pb-[env(safe-area-inset-bottom)] will-change-transform",
               isDragging ? "transition-none" : "transition-transform duration-300 ease-[cubic-bezier(.16,1,.3,1)]",
             ].join(" ")}
             style={{ transform: modalOpen ? `translateY(${dragY}px)` : "translateY(100%)" }}
