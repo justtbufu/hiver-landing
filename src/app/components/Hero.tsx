@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { createPortal } from "react-dom";
@@ -49,6 +49,13 @@ export default function Hero() {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+
+  const scrollHome = useCallback(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, []);
+
   return (
     <section
       id="top"
@@ -64,9 +71,14 @@ export default function Hero() {
         >
           <div className="mx-auto max-w-7xl px-6">
             <div className="mt-2 h-14 rounded-b-2xl bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/70 ring-1 ring-black/5 flex items-center justify-between px-4 shadow-sm">
-              <div className="flex items-center">
+              <button
+                type="button"
+                onClick={scrollHome}
+                aria-label="Torna all’inizio"
+                className="flex items-center gap-2 cursor-pointer select-none"
+              >
                 <Image src="/logo-hiver.svg" alt="Hiver" width={100} height={100} />
-              </div>
+              </button>
               <ul className="flex gap-6 text-sm text-gray-800">
                 <li><Link href="#features" className="hover:underline">Funzioni</Link></li>
                 <li><Link href="#faq" className="hover:underline">FAQ</Link></li>
@@ -89,9 +101,14 @@ export default function Hero() {
       {/* In-card navbar */}
       <div ref={navRef}>
         <nav aria-label="Primary" className="mx-auto flex max-w-7xl items-center justify-between pt-1 sm:pt-2 lg:pt-3">
-          <div className="flex items-center">
+          <button
+            type="button"
+            onClick={scrollHome}
+            aria-label="Torna all’inizio"
+            className="flex items-center gap-2 cursor-pointer select-none"
+          >
             <Image src="/logo-hiver.svg" alt="Hiver" width={120} height={120} priority />
-          </div>
+          </button>
           <ul className="hidden gap-10 text-lg text-gray-800 sm:flex">
             <li><Link href="#features" className="hover:opacity-80">Funzioni</Link></li>
             <li><Link href="#faq" className="hover:opacity-80">FAQ</Link></li>
@@ -107,7 +124,7 @@ export default function Hero() {
           </p>
           <h1
             id="hero-title"
-            className="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-tight tracking-tight text-gray-900"
+            className="text-4xl sm:text-6xl lg:text-7xl font-semibold leading-tight tracking-tight text-gray-900"
             style={{ fontFamily: 'var(--font-hagrid)', textWrap: 'balance' }}
           >
             <span className="block lg:whitespace-nowrap">L’app che unisce i genitori</span>

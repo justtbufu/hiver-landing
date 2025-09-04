@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 type Feature = {
   id: string;
@@ -72,6 +72,48 @@ export default function FeaturesSection() {
       mq.removeEventListener ? mq.removeEventListener('change', onChange) : mq.removeListener(onChange);
     };
   }, []);
+
+  // --- Mobile bottom‑sheet drag logic & background lock ---
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragY, setDragY] = useState(0); // positive = dragging down; negative = pulling up a bit
+  const startYRef = useRef<number | null>(null);
+
+  // lock background scroll when the sheet is open
+  useEffect(() => {
+    if (!modalOpen) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [modalOpen]);
+
+  const MAX_PULL_UP = 40; // allow a small elastic pull up
+  const CLOSE_THRESHOLD = 120; // drag down to close
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    startYRef.current = e.touches[0].clientY;
+    setDragY(0);
+  };
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || startYRef.current == null) return;
+    const y = e.touches[0].clientY;
+    let dy = y - startYRef.current; // + down, - up
+    if (dy < -MAX_PULL_UP) dy = -MAX_PULL_UP; // little elastic effect up
+    setDragY(dy);
+    // keep touch scroll captured by the sheet
+    e.preventDefault();
+  };
+  const onTouchEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    if (dragY > CLOSE_THRESHOLD) {
+      setModalOpen(false);
+    }
+    setDragY(0);
+    startYRef.current = null;
+  };
 
   const handleSelect = useCallback((id: string) => {
     setActive(id);
@@ -173,17 +215,21 @@ export default function FeaturesSection() {
               modalOpen ? 'opacity-100' : 'opacity-0',
             ].join(' ')}
             onClick={() => setModalOpen(false)}
+            onTouchMove={(e) => e.preventDefault()}
           />
 
           {/* Sheet */}
           <div
             className={[
               'absolute inset-x-0 bottom-0 h-[80vh] rounded-t-3xl bg-white shadow-2xl ring-1 ring-black/5',
-              'transition-transform duration-300 ease-[cubic-bezier(.22,.61,.36,1)]',
-              modalOpen ? 'translate-y-0' : 'translate-y-full',
+              isDragging ? 'transition-none' : 'transition-transform duration-300 ease-[cubic-bezier(.22,.61,.36,1)]',
             ].join(' ')}
+            style={{ transform: modalOpen ? `translateY(${dragY}px)` : 'translateY(100%)' }}
             role="dialog"
             aria-modal="true"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
           >
             <div className="flex items-center justify-between px-4 pt-3 pb-2">
               <div className="h-1.5 w-12 rounded-full bg-gray-300 mx-auto" />
