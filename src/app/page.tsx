@@ -1,22 +1,26 @@
 import Image from "next/image";
 import Hero from "./components/Hero";
+import FeaturesSection from "./components/FeaturesSection";
 
 export default function Home() {
   return (
-    <main>
+    <main className="bg-white">
       {/* HERO */}
       <Hero />
 
+      {/* ABOUT / CHI SIAMO */}
+      <AboutSection />
+
       {/* FEATURES GRID */}
-      <FeaturesSection />
+      <FeaturesSection id="features" />
 
       {/* FREE / PRICING BLURB */}
       <FreeSection />
 
-      {/* SCREENSHOTS */}
-      <ScreensSection />
+      {/* FAQ */}
+      <FaqSection />
 
-      {/* CTA MAILING LIST (esistente) */}
+      {/* WAITLIST (dark card) */}
       <WaitlistSection />
     </main>
   );
@@ -40,63 +44,23 @@ function SectionWrapper({
   );
 }
 
-/* --- Features --- */
-function FeaturesSection() {
-  const items = [
-    {
-      title: "Calendario condiviso",
-      desc: "Impegni di tutti in un’unica vista, con promemoria chiari.",
-      color: "bg-[color:var(--pink)]/30",
-    },
-    {
-      title: "Promemoria smart",
-      desc: "Notifiche su ciò che conta davvero, senza rumore.",
-      color: "bg-[color:var(--quiet)]/30",
-    },
-    {
-      title: "Liste & note",
-      desc: "Spesa, medicine, attività: tutto organizzato.",
-      color: "bg-[color:var(--honey)]/30",
-    },
-    {
-      title: "Spazio sicuro",
-      desc: "Community accogliente, zero giudizi.",
-      color: "bg-[color:var(--sprout)]/30",
-    },
-  ];
-
+/* --- About / Chi siamo --- */
+function AboutSection() {
   return (
-    <SectionWrapper id="funzioni" className="py-16 sm:py-20 lg:py-24">
-      <div className="mx-auto max-w-2xl text-center">
+    <SectionWrapper className="py-14 sm:py-18 lg:py-20">
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="text-sm uppercase tracking-wide text-gray-600" style={{ fontFamily: "var(--font-saltech)" }}>
+          Chi siamo
+        </p>
         <h2
-          className="text-3xl sm:text-4xl font-semibold tracking-tight"
+          className="mt-2 text-3xl sm:text-4xl font-semibold"
           style={{ fontFamily: "var(--font-hagrid)" }}
         >
-          Cosa puoi fare con Hiver
+          Uno spazio reale per genitori reali
         </h2>
-        <p className="mt-3 text-gray-600">
-          Strumenti semplici e pensati per la vita di tutti i giorni.
+        <p className="mt-4 text-gray-700">
+          Crediamo che la maternità e la paternità non debbano essere un'esperienza solitaria. Con Hiver crei il tuo profilo, trovi altri genitori vicino a te e organizzi momenti insieme: una passeggiata al parco, una merenda sul terrazzo, una chiacchiera tra neogenitori. Vogliamo far sentire ogni genitore accolto, connesso e capito.
         </p>
-      </div>
-
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {items.map((it) => (
-          <div
-            key={it.title}
-            className="rounded-2xl border bg-white p-6 shadow-sm hover:shadow transition"
-          >
-            <div className={`h-10 w-10 rounded-lg grid place-items-center font-bold ${it.color}`}>
-              ✓
-            </div>
-            <h3
-              className="mt-4 text-lg font-semibold"
-              style={{ fontFamily: "var(--font-hagrid)" }}
-            >
-              {it.title}
-            </h3>
-            <p className="mt-2 text-sm text-gray-600">{it.desc}</p>
-          </div>
-        ))}
       </div>
     </SectionWrapper>
   );
@@ -108,28 +72,27 @@ function FreeSection() {
     <SectionWrapper className="py-14 sm:py-18 lg:py-20">
       <div className="rounded-3xl ring-1 ring-black/5 bg-gradient-to-br from-white to-[#F9FAFB] p-8 sm:p-12 lg:p-14 text-center">
         <p className="inline-block rounded-full bg-[color:var(--honey)]/30 px-3 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-black/5">
-          Prezzo
+          Ma quanto costa?
         </p>
         <h3
           className="mt-4 text-4xl sm:text-5xl font-semibold"
           style={{ fontFamily: "var(--font-hagrid)" }}
         >
-          Gratis per i genitori
+          Gratis, per sempre.
         </h3>
         <p className="mt-3 text-gray-700 max-w-2xl mx-auto">
-          Hiver nasce per aiutare: potrai usarla gratuitamente al lancio.
-          Nessuna carta richiesta. Solo strumenti utili e un tono umano.
+          Hiver è una piattaforma pensata per creare legami tra genitori del tuo quartiere. L’accesso e le funzioni base saranno sempre gratuiti: nessuna carta, solo strumenti utili con un tono caldo e semplice. In futuro introdurremo funzioni premium opzionali.
         </p>
 
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 text-sm text-gray-700">
           <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-black/5">
-            <span>✓</span> Calendario condiviso
+            <span>✓</span> Incontri ed eventi tra genitori
           </div>
           <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-black/5">
-            <span>✓</span> Promemoria intelligenti
+            <span>✓</span> Mappa di genitori e luoghi family‑friendly
           </div>
           <div className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 ring-1 ring-black/5">
-            <span>✓</span> Liste e note
+            <span>✓</span> Feed con consigli utili & marketplace circolare
           </div>
         </div>
       </div>
@@ -137,91 +100,98 @@ function FreeSection() {
   );
 }
 
-/* --- Screenshots --- */
-function ScreensSection() {
-  // Metti i tuoi screenshot in /public/screens/ (es. screen1.png, screen2.png, screen3.png)
-  const shots = [
-    { src: "/screens/screen1.png", alt: "Home Hiver" },
-    { src: "/screens/screen2.png", alt: "Calendario Hiver" },
-    { src: "/screens/screen3.png", alt: "Liste Hiver" },
+/* --- Waitlist: dark card placed after FAQ --- */
+function WaitlistSection() {
+  return (
+    <SectionWrapper id="waitlist" className="py-20">
+      <div className="relative mx-auto max-w-4xl">
+        <div className="relative overflow-hidden rounded-3xl text-white ring-1 ring-black/5 shadow-xl p-8 sm:p-12">
+          {/* card background */}
+          <div className="absolute inset-0 bg-[color:var(--pink)]" />
+
+          {/* content */}
+          <div className="relative z-10">
+            <h3
+              className="text-2xl sm:text-3xl font-semibold"
+              style={{ fontFamily: "var(--font-hagrid)" }}
+            >
+              Resta aggiornato sul lancio
+            </h3>
+            <p className="mt-2 text-white/80">
+              Iscriviti e ti avviseremo non appena Hiver sarà disponibile. Niente spam.
+            </p>
+
+            <form
+              className="mt-6 flex flex-col sm:flex-row gap-3"
+              action="https://formspree.io/f/your-id"
+              method="POST"
+            >
+              <input
+                type="email"
+                name="email"
+                required
+                placeholder="La tua email"
+                className="w-full sm:flex-1 rounded-md bg-white/15 px-4 py-3 text-white placeholder-white/70 ring-1 ring-white/20 focus:outline-none focus:ring-2 focus:ring-white/60"
+              />
+              <button
+                type="submit"
+                className="rounded-md bg-white px-5 py-3 font-semibold text-[color:var(--ink)] hover:bg-gray-100"
+              >
+                Avvisami
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </SectionWrapper>
+  );
+}
+
+/* --- FAQ Section --- */
+function FaqSection() {
+  const faqs = [
+    {
+      q: "Cos’è Hiver?",
+      a: "Hiver è una piattaforma che mette in contatto i genitori vicini: puoi creare o unirti a piccoli eventi (passeggiate, merende, incontri) e costruire una rete reale nel quartiere.",
+    },
+    {
+      q: "È gratuita?",
+      a: "Sì. Al lancio Hiver sarà gratuita per tutti, senza carta di credito richiesta.",
+    },
+    {
+      q: "Come funzionano gli eventi?",
+      a: "Crei un evento dal tuo profilo, scegli luogo e orario e inviti altri genitori della zona. Le persone interessate si iscrivono e vi incontrate dal vivo.",
+    },
+    {
+      q: "Cosa mostro sulla mappa?",
+      a: "Vedi genitori nelle vicinanze (se lo desiderano) e luoghi utili per famiglie come pediatri, nidi, parchi e negozi per l’infanzia.",
+    },
+    {
+      q: "Posso vendere o scambiare oggetti?",
+      a: "Sì, con il marketplace puoi dare nuova vita a passeggini, giochi e abbigliamento, vendendoli o scambiandoli con altri genitori.",
+    },
   ];
 
   return (
-    <SectionWrapper className="py-16 sm:py-20 lg:py-24">
+    <SectionWrapper id="faq" className="py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-2xl text-center">
         <h2
           className="text-3xl sm:text-4xl font-semibold tracking-tight"
           style={{ fontFamily: "var(--font-hagrid)" }}
         >
-          Uno sguardo all’app
+          Domande frequenti
         </h2>
-        <p className="mt-3 text-gray-600">
-          Un’anteprima delle schermate principali. Pulita, calda, semplice.
-        </p>
+        <p className="mt-3 text-gray-600">Le risposte alle curiosità più comuni su Hiver.</p>
       </div>
 
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {shots.map((s) => (
-          <div
-            key={s.alt}
-            className="rounded-2xl bg-white p-2 ring-1 ring-black/5 shadow-sm"
-          >
-            <Image
-              src={s.src}
-              alt={s.alt}
-              width={1080}
-              height={1920}
-              className="w-full h-auto rounded-xl bg-gray-100"
-              priority={s.alt === "Home Hiver"}
-            />
-            <p className="mt-3 text-sm text-gray-600 text-center">{s.alt}</p>
+      <dl className="mt-10 divide-y divide-gray-200">
+        {faqs.map((item) => (
+          <div key={item.q} className="py-8">
+            <dt className="font-semibold text-gray-900">{item.q}</dt>
+            <dd className="mt-3 text-gray-600">{item.a}</dd>
           </div>
         ))}
-      </div>
+      </dl>
     </SectionWrapper>
-  );
-}
-
-/* --- Waitlist: re-use del tuo blocco CTA --- */
-function WaitlistSection() {
-  return (
-    <section id="waitlist" className="py-16">
-      <div className="mx-auto max-w-3xl px-6">
-        <div
-          className="rounded-3xl p-8 sm:p-10 text-center text-white"
-          style={{ background: "linear-gradient(135deg, var(--terra), var(--honey))" }}
-        >
-          <h3
-            className="text-2xl font-bold"
-            style={{ fontFamily: "var(--font-hagrid)" }}
-          >
-            Unisciti alla waitlist
-          </h3>
-          <p className="mt-2 text-white/90">
-            Ti avviseremo quando Hiver sarà disponibile. Niente spam.
-          </p>
-
-          <form
-            className="mt-6 flex flex-col sm:flex-row gap-3 justify-center"
-            action="https://formspree.io/f/your-id"
-            method="POST"
-          >
-            <input
-              type="email"
-              name="email"
-              placeholder="La tua email"
-              required
-              className="w-full sm:w-80 rounded-md border-0 px-4 py-3 text-[var(--ink)] focus:outline-none"
-            />
-            <button
-              className="rounded-md bg-black/90 px-5 py-3 font-semibold text-white hover:bg-black"
-              type="submit"
-            >
-              Avvisami
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
   );
 }
