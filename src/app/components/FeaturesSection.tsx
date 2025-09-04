@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 type Feature = {
   id: string;
@@ -60,6 +60,26 @@ export default function FeaturesSection() {
   const [active, setActive] = useState<string | null>(FEATURES[0].id);
   const current = FEATURES.find((x) => x.id === active) || null;
 
+  const [isMobile, setIsMobile] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1023px)'); // < lg
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+    mq.addEventListener ? mq.addEventListener('change', onChange) : mq.addListener(onChange);
+    return () => {
+      mq.removeEventListener ? mq.removeEventListener('change', onChange) : mq.removeListener(onChange);
+    };
+  }, []);
+
+  const handleSelect = useCallback((id: string) => {
+    setActive(id);
+    if (isMobile) {
+      setModalOpen(true);
+    }
+  }, [isMobile]);
+
   return (
     <section id="features" className="mx-auto max-w-7xl px-6 py-16 sm:py-20 lg:py-24 scroll-mt-24">
       <div className="mx-auto max-w-2xl text-center">
@@ -84,7 +104,7 @@ export default function FeaturesSection() {
               <div key={f.id} className="group">
                 <button
                   type="button"
-                  onClick={() => setActive(selected ? null : f.id)}
+                  onClick={() => handleSelect(f.id)}
                   className={[
                     "w-full rounded-2xl bg-white p-5 text-left ring-1 transition cursor-pointer",
                     "ring-gray-200 hover:ring-gray-300",
@@ -111,31 +131,13 @@ export default function FeaturesSection() {
                     </span>
                   </div>
                 </button>
-
-                {/* Preview sotto la card su mobile/tablet */}
-                <div
-                  className={[
-                    "lg:hidden overflow-hidden transition-all duration-300 ease-[cubic-bezier(.22,.61,.36,1)]",
-                    selected ? "max-h-[1200px] mt-3 opacity-100" : "max-h-0 opacity-0",
-                  ].join(" ")}
-                >
-                  <div className="rounded-2xl bg-white p-2 ring-1 ring-gray-200">
-                    <Image
-                      src={f.shot}
-                      alt={f.shotAlt}
-                      width={1080}
-                      height={1920}
-                      className="h-auto w-full rounded-xl bg-gray-100"
-                    />
-                  </div>
-                </div>
               </div>
             );
           })}
         </div>
 
         {/* Preview a destra su desktop */}
-        <div className="relative z-0 hidden lg:block">
+        <div className="relative z-[1] hidden lg:block">
           <div className="relative z-0 rounded-2xl bg-white p-3 ring-1 ring-gray-200 shadow-sm">
             {current ? (
               <FadeIn key={current.id}>
@@ -154,6 +156,74 @@ export default function FeaturesSection() {
           </div>
         </div>
       </div>
+
+      {/* Mobile modal bottom sheet for previews */}
+      {isMobile && (
+        <div
+          className={[
+            'fixed inset-0 z-[95000] lg:hidden transition-opacity',
+            modalOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0',
+          ].join(' ')}
+          aria-hidden={!modalOpen}
+        >
+          {/* Backdrop */}
+          <div
+            className={[
+              'absolute inset-0 bg-black/50 transition-opacity',
+              modalOpen ? 'opacity-100' : 'opacity-0',
+            ].join(' ')}
+            onClick={() => setModalOpen(false)}
+          />
+
+          {/* Sheet */}
+          <div
+            className={[
+              'absolute inset-x-0 bottom-0 h-[80vh] rounded-t-3xl bg-white shadow-2xl ring-1 ring-black/5',
+              'transition-transform duration-300 ease-[cubic-bezier(.22,.61,.36,1)]',
+              modalOpen ? 'translate-y-0' : 'translate-y-full',
+            ].join(' ')}
+            role="dialog"
+            aria-modal="true"
+          >
+            <div className="flex items-center justify-between px-4 pt-3 pb-2">
+              <div className="h-1.5 w-12 rounded-full bg-gray-300 mx-auto" />
+              <button
+                type="button"
+                aria-label="Chiudi anteprima"
+                onClick={() => setModalOpen(false)}
+                className="absolute right-4 top-3 rounded-md px-2 py-1 text-sm text-gray-600 hover:bg-gray-100"
+              >
+                Chiudi
+              </button>
+            </div>
+
+            <div className="px-4">
+              <h3 className="text-base font-semibold" style={{ fontFamily: 'var(--font-hagrid)' }}>
+                {current?.title}
+              </h3>
+              <p className="mt-1 text-sm text-gray-600">{current?.desc}</p>
+
+              <div className="mt-3 rounded-2xl bg-white ring-1 ring-gray-200 shadow-sm overflow-hidden">
+                <div className="relative w-full" style={{ paddingTop: '177.78%' }}>
+                  {FEATURES.map((f) => (
+                    <Image
+                      key={f.id}
+                      src={f.shot}
+                      alt={f.shotAlt}
+                      width={1080}
+                      height={1920}
+                      className={[
+                        'absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-[cubic-bezier(.22,.61,.36,1)]',
+                        active === f.id ? 'opacity-100' : 'opacity-0',
+                      ].join(' ')}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

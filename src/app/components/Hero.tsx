@@ -101,17 +101,17 @@ export default function Hero() {
       </div>
 
       <div className="mx-auto max-w-7xl mt-8 sm:mt-12 lg:mt-16 pb-8 sm:pb-12 lg:pb-16">
-        <div className="max-w-4xl">
+        <div className="max-w-3xl sm:max-w-4xl lg:max-w-5xl">
           <p className="mb-4 inline-block rounded-full bg-white/60 px-3 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-white/70 backdrop-blur">
             Novità • Hiver arriva presto
           </p>
           <h1
             id="hero-title"
-            className="text-6xl font-semibold tracking-tight text-gray-900 sm:text-7xl"
-            style={{ fontFamily: 'var(--font-hagrid)' }}
+            className="text-5xl sm:text-6xl lg:text-7xl font-semibold leading-tight tracking-tight text-gray-900"
+            style={{ fontFamily: 'var(--font-hagrid)', textWrap: 'balance' }}
           >
-            <span className="block whitespace-nowrap">L’app che unisce i genitori</span>
-            <span className="block">per creare legami reali.</span>
+            <span className="block lg:whitespace-nowrap">L’app che unisce i genitori</span>
+            <span className="block lg:whitespace-nowrap">per creare legami reali.</span>
           </h1>
 
           <p className="mt-6 max-w-2xl text-xl leading-7 text-gray-800">
