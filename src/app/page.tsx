@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Hero from "./components/Hero";
 import FeaturesSection from "./components/FeaturesSection";
 
@@ -59,7 +58,7 @@ function AboutSection() {
           Uno spazio reale per genitori reali
         </h2>
         <p className="mt-4 text-gray-700">
-          Crediamo che la maternità e la paternità non debbano essere un'esperienza solitaria. Con Hiver crei il tuo profilo, trovi altri genitori vicino a te e organizzi momenti insieme: una passeggiata al parco, una merenda sul terrazzo, una chiacchiera tra neogenitori. Vogliamo far sentire ogni genitore accolto, connesso e capito.
+          Crediamo che la maternità e la paternità non debbano essere un’esperienza solitaria. Con Hiver crei il tuo profilo, trovi altri genitori vicino a te e organizzi momenti insieme: una passeggiata al parco, una merenda sul terrazzo, una chiacchiera tra neogenitori. Vogliamo far sentire ogni genitore accolto, connesso e capito.
         </p>
       </div>
     </SectionWrapper>
