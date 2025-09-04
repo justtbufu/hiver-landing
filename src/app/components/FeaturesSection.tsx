@@ -83,7 +83,7 @@ export default function FeaturesSection() {
       mql.removeEventListener("change", onChange);
     };
   }, []);
-
+  
   const [isMobile, setIsMobile] = useState(false);
 
   // --- selection ---
