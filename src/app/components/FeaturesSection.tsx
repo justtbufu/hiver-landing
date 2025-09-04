@@ -65,19 +65,26 @@ const FEATURES: Feature[] = [
 
 export default function FeaturesSection() {
   // --- responsive: detect mobile (Tailwind lg=1024px) ---
-  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
+    // Listen for viewport changes (lg breakpoint: 1024px)
     const mql = window.matchMedia("(max-width: 1023px)");
-    const onChange = () => setIsMobile(mql.matches);
-    onChange();
-    if ((mql as any).addEventListener) mql.addEventListener("change", onChange);
-    else (mql as any).addListener(onChange);
+
+    const onChange = (e: MediaQueryListEvent) => {
+      setIsMobile(e.matches);
+    };
+
+    // set initial state
+    setIsMobile(mql.matches);
+
+    // modern API only (no deprecated addListener/removeListener)
+    mql.addEventListener("change", onChange);
+
     return () => {
-      if ((mql as any).removeEventListener)
-        mql.removeEventListener("change", onChange);
-      else (mql as any).removeListener(onChange);
+      mql.removeEventListener("change", onChange);
     };
   }, []);
+
+  const [isMobile, setIsMobile] = useState(false);
 
   // --- selection ---
   const [active, setActive] = useState<Feature["id"]>(FEATURES[0].id);
