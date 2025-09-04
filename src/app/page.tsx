@@ -11,7 +11,9 @@ export default function Home() {
       <AboutSection />
 
       {/* FEATURES GRID */}
-      <FeaturesSection id="features" />
+      <section id="features">
+        <FeaturesSection />
+      </section>
 
       {/* FREE / PRICING BLURB */}
       <FreeSection />
