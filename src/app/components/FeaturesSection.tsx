@@ -57,7 +57,7 @@ const FEATURES: Feature[] = [
 ];
 
 export default function FeaturesSection() {
-  const [active, setActive] = useState<string | null>(FEATURES[0].id);
+  const [active, setActive] = useState<string | null>(null);
   const current = FEATURES.find((x) => x.id === active) || null;
 
   const [isMobile, setIsMobile] = useState(false);
@@ -72,6 +72,16 @@ export default function FeaturesSection() {
       mq.removeEventListener ? mq.removeEventListener('change', onChange) : mq.removeListener(onChange);
     };
   }, []);
+
+  // Sync default selection based on viewport: on mobile keep none selected,
+  // on desktop select the first feature for the right-side preview.
+  useEffect(() => {
+    if (isMobile) {
+      setActive(null);
+    } else {
+      setActive((prev) => prev ?? FEATURES[0].id);
+    }
+  }, [isMobile]);
 
   // --- Mobile bottom‑sheet drag logic & background lock ---
   const [isDragging, setIsDragging] = useState(false);
@@ -91,6 +101,13 @@ export default function FeaturesSection() {
   const MAX_PULL_UP = 40; // allow a small elastic pull up
   const CLOSE_THRESHOLD = 120; // drag down to close
 
+  const closeSheet = useCallback(() => {
+    setModalOpen(false);
+    setActive(null); // ensure mobile icons reset to '+' when closed
+    setDragY(0);
+    startYRef.current = null;
+  }, []);
+
   const onTouchStart = (e: React.TouchEvent) => {
     setIsDragging(true);
     startYRef.current = e.touches[0].clientY;
@@ -109,9 +126,10 @@ export default function FeaturesSection() {
     if (!isDragging) return;
     setIsDragging(false);
     if (dragY > CLOSE_THRESHOLD) {
-      setModalOpen(false);
+      closeSheet();
+    } else {
+      setDragY(0);
     }
-    setDragY(0);
     startYRef.current = null;
   };
 
@@ -141,7 +159,7 @@ export default function FeaturesSection() {
         {/* Lista features */}
         <div className="space-y-4 lg:col-span-2">
           {FEATURES.map((f) => {
-            const selected = active === f.id;
+            const selected = isMobile ? (modalOpen && active === f.id) : active === f.id;
             return (
               <div key={f.id} className="group">
                 <button
@@ -214,14 +232,14 @@ export default function FeaturesSection() {
               'absolute inset-0 bg-black/50 transition-opacity',
               modalOpen ? 'opacity-100' : 'opacity-0',
             ].join(' ')}
-            onClick={() => setModalOpen(false)}
+            onClick={closeSheet}
             onTouchMove={(e) => e.preventDefault()}
           />
 
           {/* Sheet */}
           <div
             className={[
-              'absolute inset-x-0 bottom-0 h-[80vh] rounded-t-3xl bg-white shadow-2xl ring-1 ring-black/5',
+              'absolute inset-x-0 bottom-0 h-[88vh] rounded-t-3xl bg-white shadow-2xl ring-1 ring-black/5 touch-pan-y',
               isDragging ? 'transition-none' : 'transition-transform duration-300 ease-[cubic-bezier(.22,.61,.36,1)]',
             ].join(' ')}
             style={{ transform: modalOpen ? `translateY(${dragY}px)` : 'translateY(100%)' }}
@@ -236,7 +254,7 @@ export default function FeaturesSection() {
               <button
                 type="button"
                 aria-label="Chiudi anteprima"
-                onClick={() => setModalOpen(false)}
+                onClick={closeSheet}
                 className="absolute right-4 top-3 rounded-md px-2 py-1 text-sm text-gray-600 hover:bg-gray-100"
               >
                 Chiudi
@@ -250,18 +268,20 @@ export default function FeaturesSection() {
               <p className="mt-1 text-sm text-gray-600">{current?.desc}</p>
 
               <div className="mt-3 rounded-2xl bg-white ring-1 ring-gray-200 shadow-sm overflow-hidden">
-                <div className="relative w-full" style={{ paddingTop: '177.78%' }}>
+                <div className="relative h-[70vh] w-full">
                   {FEATURES.map((f) => (
                     <Image
                       key={f.id}
                       src={f.shot}
                       alt={f.shotAlt}
-                      width={1080}
-                      height={1920}
+                      fill
+                      priority
                       className={[
-                        'absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-[cubic-bezier(.22,.61,.36,1)]',
+                        'absolute inset-0 object-contain transition-opacity duration-300 ease-[cubic-bezier(.22,.61,.36,1)]',
+                        'origin-bottom scale-[0.85]',
                         active === f.id ? 'opacity-100' : 'opacity-0',
                       ].join(' ')}
+                      sizes="100vw"
                     />
                   ))}
                 </div>
