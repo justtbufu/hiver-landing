@@ -212,7 +212,7 @@ export default function FeaturesSection() {
                 alt={current.shotAlt}
                 width={1080}
                 height={1920}
-                className="h-auto w-full rounded-xl overflow-hidden bg-gray-100 object-contain object-top"
+                className="h-auto w-full overflow-hidden bg-gray-100 object-contain object-top"
                 priority
               />
             ) : (
@@ -285,7 +285,6 @@ export default function FeaturesSection() {
                       className={[
                         "absolute inset-0 object-contain object-top select-none pointer-events-none touch-none transition-opacity duration-300 ease-[cubic-bezier(.16,1,.3,1)]",
                         active === f.id ? "opacity-100" : "opacity-0",
-                        "rounded-2xl",
                       ].join(" ")}
                       style={{ objectPosition: 'center top' }}
                       sizes="(max-width: 1023px) 92vw, 420px"
