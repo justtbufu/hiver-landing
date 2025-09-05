@@ -212,7 +212,7 @@ export default function FeaturesSection() {
                 alt={current.shotAlt}
                 width={1080}
                 height={1920}
-                className="h-auto w-full rounded-xl bg-gray-100"
+                className="h-auto w-full rounded-xl overflow-hidden bg-gray-100 object-contain object-top"
                 priority
               />
             ) : (
@@ -260,7 +260,7 @@ export default function FeaturesSection() {
                   type="button"
                   aria-label="Chiudi anteprima"
                   onClick={closeSheet}
-                  className="absolute right-5 top-1 rounded-md px-2 py-1 text-sm text-gray-600 hover:bg-gray-100"
+                  className="absolute right-5 top-0 rounded-md px-2 py-1 text-sm text-gray-600 hover:bg-gray-100"
                 >
                   Chiudi
                 </button>
@@ -273,7 +273,7 @@ export default function FeaturesSection() {
 
               <div className="mt-1 overflow-hidden">
                 {/* Area immagine alta per avvicinarci al 9:16 e sfruttare lo spazio disponibile */}
-                <div className="relative mx-auto w-[min(92vw,420px)] aspect-[9/16]">
+                <div className="relative mx-auto w-[min(92vw,420px)] aspect-[9/16] rounded-2xl overflow-hidden">
                   {FEATURES.map((f) => (
                     <Image
                       key={f.id}
@@ -285,8 +285,9 @@ export default function FeaturesSection() {
                       className={[
                         "absolute inset-0 object-contain object-top select-none pointer-events-none touch-none transition-opacity duration-300 ease-[cubic-bezier(.16,1,.3,1)]",
                         active === f.id ? "opacity-100" : "opacity-0",
+                        "rounded-2xl",
                       ].join(" ")}
-                      style={{ objectPosition: 'top center' }}
+                      style={{ objectPosition: 'center top' }}
                       sizes="(max-width: 1023px) 92vw, 420px"
                     />
                   ))}
