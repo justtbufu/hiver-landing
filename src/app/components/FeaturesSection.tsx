@@ -283,9 +283,10 @@ export default function FeaturesSection() {
                       draggable={false}
                       priority
                       className={[
-                        "absolute inset-0 object-contain select-none pointer-events-none touch-none transition-opacity duration-300 ease-[cubic-bezier(.16,1,.3,1)]",
+                        "absolute inset-0 object-contain object-top select-none pointer-events-none touch-none transition-opacity duration-300 ease-[cubic-bezier(.16,1,.3,1)]",
                         active === f.id ? "opacity-100" : "opacity-0",
                       ].join(" ")}
+                      style={{ objectPosition: 'top center' }}
                       sizes="(max-width: 1023px) 92vw, 420px"
                     />
                   ))}
